@@ -11,15 +11,26 @@ namespace twozerofoureight
         protected int boardSize; // default is 4
         protected int[,] board;
         protected Random rand;
-        int i=2;
+        private int score;
+        protected bool finish = false;
         public TwoZeroFourEightModel() : this(4)
         {
             // default board size is 4 
+            score = 2;
         }
-        public int Updatescore()
+        public int GetScore()
         {
-            i += 2;
-            return i ;
+            return score;
+            int sum = 0;
+            int[] range = Enumerable.Range(0, boardSize).ToArray();
+            foreach (int i in range)
+            {
+                foreach (int j in range)
+                {
+                    sum = sum + board[i, j];
+                }
+            }
+            return sum;
         }
         public int[,] GetBoard()
         {
@@ -30,17 +41,31 @@ namespace twozerofoureight
             boardSize = size;
             board = new int[boardSize, boardSize];
             var range = Enumerable.Range(0, boardSize);
-            foreach(int i in range) {
-                foreach(int j in range) {
-                    board[i,j] = 0;
+            foreach (int i in range)
+            {
+                foreach (int j in range)
+                {
+                    board[i, j] = 0;
                 }
             }
             rand = new Random();
             board = Random(board);
-          //  Updatescore();
+            //  Updatescore();
             NotifyAll();
         }
-
+        public bool isFinish()
+        {
+            int sum = 0;
+            int[] range = Enumerable.Range(0, boardSize).ToArray();
+            foreach (int i in range)
+            {
+                foreach (int j in range)
+                {
+                    if (board[i, j] > 0) sum++;
+                }
+            }
+            return sum == 16;
+        }
         private int[,] Random(int[,] input)
         {
             while (true)
@@ -106,7 +131,7 @@ namespace twozerofoureight
                 }
             }
             board = Random(board);
-          
+            score = score + 2;
             NotifyAll();
         }
 
@@ -159,7 +184,7 @@ namespace twozerofoureight
                 }
             }
             board = Random(board);
-          
+            score = score + 2;
             NotifyAll();
         }
 
@@ -214,7 +239,7 @@ namespace twozerofoureight
                 }
             }
             board = Random(board);
-         
+            score = score + 2;
             NotifyAll();
         }
 
@@ -265,7 +290,7 @@ namespace twozerofoureight
                 }
             }
             board = Random(board);
-   
+            score = score + 2;
             NotifyAll();
         }
     }
